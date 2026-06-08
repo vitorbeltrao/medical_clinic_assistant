@@ -1,4 +1,5 @@
 import streamlit as st
+
 from src.utils import chat_iteration
 from src.prompts import SYSTEM_PROMPT
 
@@ -12,20 +13,33 @@ if "messages" not in st.session_state:
         }
     ]
 
+prompt = st.chat_input(
+    "Digite sua mensagem..."
+)
 
-prompt = st.chat_input("Say something")
 if prompt:
 
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append(
+        {
+            "role": "user",
+            "content": prompt
+        }
+    )
 
     with st.chat_message("user"):
         st.write(prompt)
 
-
     with st.chat_message("assistant"):
+
         response = chat_iteration(
-            messages=st.session_state.messages,
-            model="gpt-4o-mini"
+            messages=st.session_state.messages
         )
+
         st.write(response)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": response
+        }
+    )
